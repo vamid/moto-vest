@@ -1,6 +1,10 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 
+
+//Routers
+const homePageRouter = require('./routers/home');
+
 PORT = 3000;
 
 const app = express();
@@ -12,21 +16,10 @@ const hbs = exphbs.create({
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs')
+app.use(express.static('public'));
 
-//app.set('hbs', hbs.engine);
-//app.use()
-//app.use('enigne', 'hbs');
-
-
-app.get('/', (req, res) => {
-    res.render('home', {
-        cont: "Zdes bil ebal"
-    })
-})
-
-
-
-
+//use routers
+app.use('/', homePageRouter);
 
 app.listen(PORT, (err) => {
     if (err) throw err
