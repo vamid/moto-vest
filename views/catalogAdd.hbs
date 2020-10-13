@@ -1,4 +1,41 @@
-<form action="/catalog/add" method="post" enctype="multipart/form-data">
-  <input type="file" name="img" />
-  <button class="btn" type="submit">Upload</button>
+ <form action="/catalog/add" method="post" enctype="multipart/form-data">
+  <div class="row">
+    <div class="input-field col s12">
+      <input id="name" name="name" type="text" class="validate">
+      <label for="name">Название</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+        <select name="group">
+          <option value="1">Байкерская атрибутика</option>
+          <option value="2">Кожанные аксессуары</option>
+          <option value="3">Сумки и подсумки</option>
+          <option value="4">Картины и элементы декора</option>
+        </select>
+        <label>Выбор группы</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+      <textarea id="description" name="description" class="materialize-textarea"></textarea>
+      <label for="description">Описание</label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-field col s12">
+      <input id="price" name="price" type="number" class="validate">
+      <label for="price">Цена</label>
+    </div>
+  </div>
+  <div class="file-field input-field">
+    <div class="btn">
+      <span>Выбрать изображения</span>
+      <input type="file" name="img" multiple>
+    </div>
+    <div class="file-path-wrapper">
+      <input class="file-path validate" type="text" placeholder="Upload one or more files">
+    </div>
+  </div>
+  <button class="btn" type="submit">Создать позицию</button>
 </form>

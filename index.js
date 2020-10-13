@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+const mongoose = require('mongoose');
 
 //middleware
 const fileUpLoadMiddleware = require('./middleware/fileUpLoad');
@@ -8,6 +9,7 @@ const homePageRouter = require('./routers/homeRouter');
 const catalogRouter = require('./routers/catalogRouter');
 
 PORT = 3000;
+mongURL = "mongodb+srv://moto-vest:7zymZeU4Q5hd4W74@zerocluster.ig2q0.mongodb.net/moto-vest";
 
 const app = express();
 
@@ -22,7 +24,7 @@ app.use(express.static('public'));
 
 //middleware use
 
-app.use(fileUpLoadMiddleware.single('img'));
+app.use(fileUpLoadMiddleware.array('img', 5));
 
 
 //use routers
@@ -52,10 +54,22 @@ app.get('/sizes', (req, res) => {
     })
 })
 
-app.listen(PORT, (err) => {
-    if (err) throw err
-    else { 
-        console.log(`Server runnig on port: ${PORT}`);
+const start = async function() {
+    try {
+        await mongoose.connect(mongURL, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            useFindAndModify: true
+        })        
+        app.listen(PORT, (err) => {
+                if (err) throw err
+                else { 
+                    console.log(`Server runnig on port: ${PORT}`);
+                }
+        })
+    } catch (error) {
+        console.log(error)
     }
-})
+}
+start();
 

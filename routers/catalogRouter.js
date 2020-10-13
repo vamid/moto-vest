@@ -1,5 +1,7 @@
 const {Router} = require('express');
+const Catalog = require('../models/Catalog');
 const router = Router();
+
 
 router.get('/', async (req, res) => {
     res.render('catalog', {
@@ -31,7 +33,6 @@ router.get('/leather_accessories', async (req, res) => {
     })
 })
 
-
 //Catalog ADD
 router.get('/add', async (req, res) => {
     res.render('catalogAdd', {
@@ -39,10 +40,18 @@ router.get('/add', async (req, res) => {
     })
 })
 router.post('/add', async (req, res) => {
-    if (req.file) {
+    try {
+        const new_product = new Catalog({
+            name: req.body.name,
+            group: req.body.group,
+            imgURL: req.files.map(file => file.path),
+            price: req.body.price,
+            description: req.body.description
+        })
+        await new_product.save();
         res.redirect('/catalog');
-    } else {
-        res.redirect('/')
+    } catch (error) {
+        console.log(error)
     }
 })
 
