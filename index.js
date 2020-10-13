@@ -1,6 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
+const path = require('path');
 
 //middleware
 const fileUpLoadMiddleware = require('./middleware/fileUpLoad');
@@ -15,12 +16,18 @@ const app = express();
 
 const hbs = exphbs.create({
     extname: 'hbs',
-    defaultLayout: 'main'
+    defaultLayout: 'main',
+    runtimeOptions: {
+        allowProtoPropertiesByDefault: true,
+        allowProtoMethodsByDefault: true,
+      }
 })
 
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs')
 app.use(express.static('public'));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/upload_img', express.static(path.join(__dirname, 'upload_img')));
 
 //middleware use
 

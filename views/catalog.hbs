@@ -8,3 +8,26 @@
 Каждый элемент дополняет образ байкера и показывает его душу.
 </p>
 {{cont}}
+{{#if catalog.length}}
+<div class="row">
+{{#each catalog}}
+    <div class="col s12 m4">
+      <div class="card">
+        <div class="card-image">
+          <img src="/{{imgURL.[0]}}">
+          <span class="card-title">{{name}}</span>
+        </div>
+        <div class="card-content">
+          <p>{{description}}</p>
+          <p class="text big">{{price}}</p>
+        </div>
+        <div class="card-action">
+          <a href="#" target="_blank">Открыть</a>
+        </div>
+      </div>
+    </div>
+{{/each}}
+</div>
+{{else}} 
+
+{{/if}}

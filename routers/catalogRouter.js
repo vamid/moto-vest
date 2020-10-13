@@ -4,15 +4,20 @@ const router = Router();
 
 
 router.get('/', async (req, res) => {
-    res.render('catalog', {
+    res.render('catalogMain', {
         isCatalog: true
     })
 })
 router.get('/biker_paraphernalia', async (req, res) => {
-    res.render('catalog', {
-        isBikerParaph: true,
-        cont: 'Biker'
-    })
+    try {
+        const biker_catalog = (await Catalog.find()).filter(prod => prod.group === 1);
+        res.render('catalog', {
+            isBikerParaph: true,
+            catalog: biker_catalog
+        })
+    } catch (error) {
+        console.log(error)
+    }
 })
 router.get('/bags', async (req, res) => {
     res.render('catalog', {
