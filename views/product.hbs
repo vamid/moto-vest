@@ -1,0 +1,27 @@
+<div class="row">
+    <div class="col s12">
+    <span class="card-title">{{product.name}}</span>
+      <div class="card">
+        <div class="card-image">
+          <div class="slider">
+            <ul class="slides">
+            {{#each product.imgURL}}
+            <li>
+                <img src="/{{this}}"> 
+                <div class="caption center-align">
+                </div>
+            </li>
+            {{/each}}
+            </ul>
+        </div>
+        </div>
+        <div class="card-content">
+            <p>{{product.description}}</p>
+            <p class="price big">{{product.price}}</p>
+        </div>
+        <div class="card-action">
+          <a href="#">Добавить в корзину</a>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -10,33 +10,61 @@ router.get('/', async (req, res) => {
 })
 router.get('/biker_paraphernalia', async (req, res) => {
     try {
-        const biker_catalog = (await Catalog.find()).filter(prod => prod.group === 1);
+        const catalog = (await Catalog.find()).filter(prod => prod.group === 1);
         res.render('catalog', {
             isBikerParaph: true,
-            catalog: biker_catalog
+            catalog
         })
     } catch (error) {
         console.log(error)
     }
 })
 router.get('/bags', async (req, res) => {
-    res.render('catalog', {
-        isBags: true,
-        cont: 'Bags'
-    })
+    try {
+        const catalog = (await Catalog.find()).filter(prod => prod.group === 3);
+        res.render('catalog', {
+            isBags: true,
+            catalog
+        })
+    } catch (error) {
+        console.log(error)
+    }
 })
 router.get('/art', async (req, res) => {
-    res.render('catalog', {
-        isArt: true,
-        cont: 'Bags'
-    })
+    try {
+        const catalog = (await Catalog.find()).filter(prod => prod.group === 2);
+        res.render('catalog', {
+            isArt: true,
+            catalog
+        })
+    } catch (error) {
+        console.log(error)
+    }
 })
 router.get('/leather_accessories', async (req, res) => {
-    res.render('catalog', {
-        isLeatherAcc: true,
-        cont: 'Leather Accessories'
-    })
+    try {
+        const catalog = (await Catalog.find()).filter(prod => prod.group === 4);
+        res.render('catalog', {
+            isLeatherAcc: true,
+            catalog
+        })
+    } catch (error) {
+        console.log(error)
+    }
 })
+//Open product
+
+router.get('/:id', async (req, res) => {
+    try {
+        const product = await Catalog.findById(req.params.id);
+        res.render('product', {
+            product
+        })
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 
 //Catalog ADD
 router.get('/add', async (req, res) => {
