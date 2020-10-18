@@ -52,27 +52,18 @@ router.get('/leather_accessories', async (req, res) => {
         console.log(error)
     }
 })
-//Open product
-
-router.get('/:id', async (req, res) => {
-    try {
-        const product = await Catalog.findById(req.params.id);
-        res.render('product', {
-            product
-        })
-    } catch (error) {
-        console.log(error);
-    }
-})
 
 
 //Catalog ADD
 router.get('/add', async (req, res) => {
+    
     res.render('catalogAdd', {
         isCatalogAdd: true
     })
 })
+
 router.post('/add', async (req, res) => {
+    
     try {
         const new_product = new Catalog({
             name: req.body.name,
@@ -87,5 +78,19 @@ router.post('/add', async (req, res) => {
         console.log(error)
     }
 })
+
+//Open product
+
+router.get('/:id', async (req, res) => {
+    try {
+        const product = await Catalog.findById(req.params.id);
+        res.render('product', {
+            product
+        })
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 
 module.exports = router;

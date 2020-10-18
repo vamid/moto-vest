@@ -4,13 +4,21 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 //middleware
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 const fileUpLoadMiddleware = require('./middleware/fileUpLoad');
 //Routers
 const homePageRouter = require('./routers/homeRouter');
 const catalogRouter = require('./routers/catalogRouter');
+const cartRouter = require('./routers/cartRouter');
 
 PORT = 3000;
 mongURL = "mongodb+srv://moto-vest:7zymZeU4Q5hd4W74@zerocluster.ig2q0.mongodb.net/moto-vest";
+
+const sessionStore = new MongoStore({
+    collection: 'sessions',
+    url: mongURL,
+})
 
 const app = express();
 
@@ -30,13 +38,22 @@ app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/upload_img', express.static(path.join(__dirname, 'upload_img')));
 
 //middleware use
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(session({
+    secret: 'some secret',
+    resave: false,
+    saveUninitialized: true,
+    store: sessionStore,
+    cookie: { maxAge: 60*60*24*7 }
+}))
 
-app.use(fileUpLoadMiddleware.array('img', 5));
+app.use(fileUpLoadMiddleware.array('img', 10));
 
 
 //use routers
 app.use('/', homePageRouter);
-app.use('/catalog', catalogRouter);
+app.use('/cart', cartRouter);
 
 app.get('/delivery', (req, res) => {
     res.render('delivery', {
@@ -60,6 +77,7 @@ app.get('/sizes', (req, res) => {
         isSizes: true
     })
 })
+app.use('/catalog', catalogRouter);
 
 const start = async function() {
     try {

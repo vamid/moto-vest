@@ -46,12 +46,14 @@
         </div>
         <div class="card-content">
           <span class="card-title">{{name}}</span>
-          <p>{{description}}</p>
-          <p class="text big">{{price}}</p>
+          <p class="price big">{{price}}</p>
         </div>
         <div class="card-action">
           <a href="/catalog/{{_id}}" target="_blank">Открыть</a>
-          <a class="btn-floating waves-effect waves-light darkslategrey"><i class="material-icons">add_shopping_cart</i></a>
+          <form action="/cart/add" method="POST">
+            <input type="hidden" name="id" value="{{_id}}" >
+            <button class="btn-floating waves-effect waves-light darkslategrey" type="submit"><i class="material-icons">add_shopping_cart</i></button>
+          </form>
         </div>
         </div>
       </div>
