@@ -20,7 +20,10 @@
             <p class="price big">{{product.price}}</p>
         </div>
         <div class="card-action">
-          <a href="#">Добавить в корзину</a>
+          <form action="/cart/add" method="POST">
+            <input type="hidden" name="id" value="{{product._id}}" >
+            <button class="btn-floating waves-effect waves-light darkslategrey" type="submit"><i class="material-icons">add_shopping_cart</i></button>
+          </form>
         </div>
       </div>
     </div>

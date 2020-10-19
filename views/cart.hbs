@@ -1,1 +1,28 @@
-{{cart}}
+<div id="cart">
+    {{#if cartArray.length}}
+    <table>
+        <thead>
+            <tr>
+                <th>№ п/п</th>
+                <th>Наименование товара</th>
+                <th>Количество</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each cartArray}}
+            <tr>
+                <td>1</td>
+                <td>{{name}}</td>
+                <td>{{count}}</td>
+                <td>
+                    <button class="btn js-remove" data-id="{{id}}">Delete</button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+    {{else}}
+    There are nothing.
+    {{/if}}
+</div>

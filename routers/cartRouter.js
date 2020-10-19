@@ -1,18 +1,34 @@
 const {Router} = require('express');
-const Cart = require('../models/Cart');
 const Catalog = require('../models/Catalog');
 const router = Router();
 
-router.get('/', (req, res) => {
-    if (!req.session.cart) {
-        //const cart = new Cart();
-        req.session.cart = {};
+const cartToArray = async (cart) => {
+    let cartArray = [];
+    for (key in cart) {
+        let candidate = await Catalog.findById(key);
+        cartArray.push({
+            id: key,
+            name: candidate.name,
+            count: cart[key],
+        })
     }
-    const cart = req.session.cart;
-    res.render('cart', {
-        isCart: true,
-        cart,
-    })
+    return cartArray;
+}
+
+router.get('/', async (req, res) => {
+    try {
+        if (!req.session.cart) {
+            req.session.cart = {};
+        }
+        const cartArray = await cartToArray(req.session.cart);
+        res.render('cart', {
+            isCart: true,
+            cartArray,
+        })
+    } catch (error) {
+        console.log(error);
+    }
+    
 })
 
 router.post('/add', async (req, res) => {
@@ -24,7 +40,6 @@ router.post('/add', async (req, res) => {
         } else {
             const cart = req.session.cart;
             if (product) {
-                //const idx = cart.findIndex(c => {c. === id})
                 if (id in cart) {
                     //if in cart already exists product
                     cart[id] += 1;
@@ -39,5 +54,26 @@ router.post('/add', async (req, res) => {
         console.log(error);
     }
 })
+
+router.delete('/substr/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        if (req.session.cart) {
+            const cart = req.session.cart;
+                if (id in cart) {
+                    if (cart[id] === 1) {
+                        delete cart[id];
+                    } else {
+                        cart[id] -= 1;
+                    }
+                    req.session.cart = cart;
+                }   
+        }             
+        res.json(await cartToArray(req.session.cart));
+    } catch (error) {
+        console.log(error);
+    }
+})
+
 
 module.exports = router;
