@@ -2,6 +2,7 @@ const {Schema, model, Types} = require('mongoose');
 const Catalog = require('../models/Catalog');
 const autoIncrement = require('mongoose-auto-increment');
 const mongoose = require('mongoose');
+const e = require('express');
 
 const Order = new Schema({
     number: {

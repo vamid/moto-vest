@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const Catalog = require('../models/Catalog');
 const router = Router();
+const fs = require('fs');
 
 
 router.get('/', async (req, res) => {
@@ -91,6 +92,26 @@ router.get('/:id', async (req, res) => {
         console.log(error);
     }
 })
+//Delete product
+router.delete('/remove/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const group = parseInt(req.body.group);
+        const candidate = await Catalog.findById(id);
+        if (candidate) {
+            candidate.imgURL.forEach(img => {
+                fs.unlink(img, (err) => {
+                    if (err) throw err;
+                });
+            });
+        }
+        await Catalog.findByIdAndRemove(id);
+        const catalog = (await Catalog.find()).filter(prod => prod.group === group);
+        res.json(catalog);        
+    } catch (error) {
+        console.log(error);
+    }
 
+})
 
 module.exports = router;

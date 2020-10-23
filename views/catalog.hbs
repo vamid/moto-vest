@@ -38,6 +38,7 @@
 
 {{#if catalog.length}}
 <div class="row">
+  <div id="catalog_items">
 {{#each catalog}}
     <div class="col s12 m4">
       <div class="card">
@@ -49,15 +50,19 @@
           <p class="price big">{{price}}</p>
         </div>
         <div class="card-action">
-          <a href="/catalog/{{_id}}" target="_blank">Открыть</a>
+          <a href="/catalog/{{_id}}" target="_blank"><button class="btn-floating waves-effect waves-light darkslategrey" type="submit"><i class="material-icons">open_in_new</i></button></a>
           <form action="/cart/add" method="POST">
             <input type="hidden" name="id" value="{{_id}}" >
             <button class="btn-floating waves-effect waves-light darkslategrey" type="submit"><i class="material-icons">add_shopping_cart</i></button>
           </form>
+          <button class="btn-floating waves-effect waves-light darkslategrey">
+              <i class="material-icons btn-remove-catalog-item" data-id="{{_id}}" data-group="{{group}}">delete_forever</i>
+            </button>
         </div>
         </div>
       </div>
 {{/each}}
+  </div>
 </div>
 {{else}} 
 <p>В этой категории пока нет товаров =(</p>
