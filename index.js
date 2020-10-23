@@ -2,15 +2,17 @@ const express = require('express');
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const path = require('path');
-
+const Order = require('./models/Order');
 //middleware
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const fileUpLoadMiddleware = require('./middleware/fileUpLoad');
+const autoIncrement = require('mongoose-auto-increment');
 //Routers
 const homePageRouter = require('./routers/homeRouter');
 const catalogRouter = require('./routers/catalogRouter');
 const cartRouter = require('./routers/cartRouter');
+const orderRouter = require('./routers/orderRouter');
 
 PORT = 3000;
 mongURL = "mongodb+srv://moto-vest:7zymZeU4Q5hd4W74@zerocluster.ig2q0.mongodb.net/moto-vest";
@@ -45,7 +47,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     store: sessionStore,
-    cookie: { maxAge: 60*60*24*7 }
+    cookie: { maxAge: 1000*60*60*24*7 }
 }))
 
 app.use(fileUpLoadMiddleware.array('img', 10));
@@ -54,6 +56,7 @@ app.use(fileUpLoadMiddleware.array('img', 10));
 //use routers
 app.use('/', homePageRouter);
 app.use('/cart', cartRouter);
+app.use('/orders', orderRouter);
 
 app.get('/delivery', (req, res) => {
     res.render('delivery', {
@@ -84,8 +87,10 @@ const start = async function() {
         await mongoose.connect(mongURL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-            useFindAndModify: true
-        })        
+            useFindAndModify: false,
+            useCreateIndex: true,
+        })
+        
         app.listen(PORT, (err) => {
                 if (err) throw err
                 else { 

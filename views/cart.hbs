@@ -22,7 +22,43 @@
             {{/each}}
         </tbody>
     </table>
+                            <!-- Modal Trigger -->
+    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Оформить заказ</a>
     {{else}}
     There are nothing.
     {{/if}}
 </div>
+  <!-- Modal Structure -->
+  <form action="/orders/add" method="POST" >
+    <div id="modal1" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row">
+                <h4>Заказ</h4>
+            </div>
+        <div class="row">
+            <p>A bunch of text</p>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="name" name="name" type="text" class="validate">
+                <label for="name">ФИО</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="phone" name="phone" type="text" class="validate">
+                <label for="phone">Номер телефона</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="address" name="address" type="text" class="validate">
+                <label for="address">Полный адрес</label>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-close waves-effect waves-green btn-flat" type="submit">Заказать</button>
+        </div>
+    </div>
+  </form> 

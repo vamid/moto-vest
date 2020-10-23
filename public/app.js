@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     var instances_slider = M.Slider.init(elems_slider, {});
     var elems_select = document.querySelectorAll('select');
     var instances_select = M.FormSelect.init(elems_select, {});    
+    var elemsModal = document.querySelectorAll('.modal');
+    var instancesModal = M.Modal.init(elemsModal, {});
   });
 
 //ajax
