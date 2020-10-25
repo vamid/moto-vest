@@ -14,7 +14,11 @@ const Catalog = new Schema({
         type: String
     }],
     price: Number,
-    description: String
+    description: String,
+    visible: {
+        type: Boolean,
+        default:true
+    },
 })
 
 module.exports = model('Catalog', Catalog);

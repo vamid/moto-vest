@@ -33,7 +33,7 @@ router.get('/bags', async (req, res) => {
 })
 router.get('/art', async (req, res) => {
     try {
-        const catalog = (await Catalog.find()).filter(prod => prod.group === 2);
+        const catalog = (await Catalog.find()).filter(prod => prod.group === 4);
         res.render('catalog', {
             isArt: true,
             catalog
@@ -44,7 +44,7 @@ router.get('/art', async (req, res) => {
 })
 router.get('/leather_accessories', async (req, res) => {
     try {
-        const catalog = (await Catalog.find()).filter(prod => prod.group === 4);
+        const catalog = (await Catalog.find()).filter(prod => prod.group === 2);
         res.render('catalog', {
             isLeatherAcc: true,
             catalog
@@ -105,7 +105,8 @@ router.delete('/remove/:id', async (req, res) => {
                 });
             });
         }
-        await Catalog.findByIdAndRemove(id);
+        candidate.visible = false;
+        await candidate.save();
         const catalog = (await Catalog.find()).filter(prod => prod.group === group);
         res.json(catalog);        
     } catch (error) {

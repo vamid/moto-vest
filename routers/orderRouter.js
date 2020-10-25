@@ -21,8 +21,11 @@ router.get('/', async (req, res) => {
         const orders = [];
         if (orders_id) {
             for (let i = 0; i < orders_id.length; i++) {
-                orders.push(await Order.findById(orders_id[i]));
-            await orders[i].populate('cart.id').execPopulate();
+                const cand = await Order.findById(orders_id[i]);
+                if (cand) {
+                    orders.push(cand);
+                    await orders[i].populate('cart.id').execPopulate();
+                }
             }
         }
         res.render('orders', {
@@ -56,7 +59,13 @@ router.post('/add', async (req, res) => {
         console.log(error);
     }
 })
+//search
 
+router.post('/search', async (req, res) => {
+    const search_order = await Order.findOne({number: parseInt(req.body.number)});
+    await search_order.populate('cart.id').execPopulate()
+    res.json(search_order);
+})
 
 
 

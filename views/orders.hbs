@@ -27,5 +27,22 @@
     </div>
   {{/each}}
 {{else}}
-  <p>Нет заказов =(</p>
+  
+  <div id="order_search">
+  <div class="row">
+        <div class="row">
+          <p>Поиск заказа:</p>
+          <div class="input-field col s3">
+            <input id="input_text" type="number" data-length="4">
+            <label for="input_text">Номер заказа</label>
+          </div>
+          <div class="row">
+          <button class="btn-floating waves-effect waves-light darkslategrey">
+              <i class="material-icons btn-order-search">search</i>
+          </button>
+          </div>
+        </div>
+    </div>
+  </div>
+  <div id="order_search_result"></div>
 {{/if}}
