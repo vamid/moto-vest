@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const router = Router();
+const bcrypt = require('bcryptjs');
 
 router.get('/', (req, res) => {
     res.render('home', {
@@ -8,8 +9,14 @@ router.get('/', (req, res) => {
     })
 })
 router.post('/superUser', async (req, res) => {
-    req.session.superUser = true;
-    res.redirect('/');
+    const hash = "$2a$10$sx3BxUdH5AHflQbZeDQRdOFyAiREFyrc3c5mAftOJue./n09wWiiK";
+    if (await bcrypt.compare(req.body.pswd, hash)) {
+        req.session.superUser = true;
+        res.redirect('/catalog');
+    } else {
+        res.redirect('/');
+    }
+    //console.log(await bcrypt.hash('1234', 10));
 })
 router.get('/out', async (req, res) =>{
     req.session.destroy(() => {
