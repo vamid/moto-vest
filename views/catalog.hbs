@@ -56,9 +56,11 @@
             <input type="hidden" name="id" value="{{_id}}" >
             <button class="btn-floating waves-effect waves-light darkslategrey" type="submit"><i class="material-icons">add_shopping_cart</i></button>
           </form>
+          {{#if @root.isSuperUser}}
           <button class="btn-floating waves-effect waves-light darkslategrey">
               <i class="material-icons btn-remove-catalog-item" data-id="{{_id}}" data-group="{{group}}">delete_forever</i>
-            </button>
+          </button>
+          {{/if}}
         </div>
         </div>
       </div>

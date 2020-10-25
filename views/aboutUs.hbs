@@ -12,3 +12,24 @@
 
 </p>
 <p>Here should be images about_us_x.jpg</p>
+<!-- Modal Trigger -->
+<a class="waves-effect waves-light btn modal-trigger" href="#modal2">admin</a>
+<!-- Modal Structure -->
+  <form action="/superUser" method="POST" >
+    <div id="modal2" class="modal modal-fixed-footer">
+        <div class="modal-content">
+            <div class="row">
+                <h4>Для входа в режим администрирования введите пароль:</h4>
+            </div>
+        <div class="row">
+            <div class="input-field col s3">
+                <input id="pswd" name="pswd" type="text" class="validate">
+                <label for="name">Пароль</label>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button class="modal-close waves-effect waves-green btn-flat" type="submit">Войти</button>
+        </div>
+    </div>
+  </form> 

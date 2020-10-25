@@ -8,6 +8,7 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const fileUpLoadMiddleware = require('./middleware/fileUpLoad');
 const autoIncrement = require('mongoose-auto-increment');
+const variables = require('./middleware/variables');
 //Routers
 const homePageRouter = require('./routers/homeRouter');
 const catalogRouter = require('./routers/catalogRouter');
@@ -49,37 +50,14 @@ app.use(session({
     store: sessionStore,
     cookie: { maxAge: 1000*60*60*24*7 }
 }))
-
 app.use(fileUpLoadMiddleware.array('img', 10));
-
+app.use(variables);
 
 //use routers
 app.use('/', homePageRouter);
 app.use('/cart', cartRouter);
 app.use('/orders', orderRouter);
 
-app.get('/delivery', (req, res) => {
-    res.render('delivery', {
-        isDelivery: true
-    })
-})
-app.get('/aboutUs', (req, res) => {
-    res.render('aboutUs', {
-        isAboutUs: true
-    })
-})
-
-app.get('/contacts', (req, res) => {
-    res.render('contacts', {
-        isContacts: true
-    })
-})
-
-app.get('/sizes', (req, res) => {
-    res.render('sizes', {
-        isSizes: true
-    })
-})
 app.use('/catalog', catalogRouter);
 
 const start = async function() {

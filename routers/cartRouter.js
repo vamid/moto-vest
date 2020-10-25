@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const Catalog = require('../models/Catalog');
+const su = require('../middleware/superUser');
 const router = Router();
 
 const cartToArray = async (cart) => {

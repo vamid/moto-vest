@@ -29,7 +29,10 @@
       <li><a href="/cart">Корзина</a></li>
       <li><a href="/orders">Заказы</a></li>
       <!-- Admin -->
+      {{#if @root.isSuperUser}}
       <li><a href="/catalog/add">Добавить товар</a></li>
+      <li><a href="/out">Выйти</a></li>
+      {{/if}}
     </ul>
   </div>
 </nav>

@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const Catalog = require('../models/Catalog');
+const su = require('../middleware/superUser');
 const router = Router();
 const fs = require('fs');
 
@@ -56,14 +57,14 @@ router.get('/leather_accessories', async (req, res) => {
 
 
 //Catalog ADD
-router.get('/add', async (req, res) => {
+router.get('/add', su, async (req, res) => {
     
     res.render('catalogAdd', {
         isCatalogAdd: true
     })
 })
 
-router.post('/add', async (req, res) => {
+router.post('/add', su, async (req, res) => {
     
     try {
         const new_product = new Catalog({
@@ -93,7 +94,7 @@ router.get('/:id', async (req, res) => {
     }
 })
 //Delete product
-router.delete('/remove/:id', async (req, res) => {
+router.delete('/remove/:id', su, async (req, res) => {
     try {
         const id = req.params.id;
         const group = parseInt(req.body.group);
