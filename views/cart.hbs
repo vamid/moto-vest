@@ -16,7 +16,7 @@
                 <td>{{name}}</td>
                 <td>{{count}}</td>
                 <td>
-                    <button class="btn js-remove" data-id="{{id}}">Delete</button>
+                    <button class="btn js-remove" data-id="{{id}}" data-csrf="{{@root.csrf}}">Delete</button>
                 </td>
             </tr>
             {{/each}}
@@ -30,6 +30,7 @@
 </div>
   <!-- Modal Structure -->
   <form action="/orders/add" method="POST" >
+  <input type="hidden" name="_csrf" value="{{csrf}}">
     <div id="modal1" class="modal modal-fixed-footer">
         <div class="modal-content">
             <div class="row">

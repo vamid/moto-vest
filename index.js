@@ -6,6 +6,7 @@ const Order = require('./models/Order');
 //middleware
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
+const csurf = require('csurf');
 const fileUpLoadMiddleware = require('./middleware/fileUpLoad');
 const autoIncrement = require('mongoose-auto-increment');
 const variables = require('./middleware/variables');
@@ -50,6 +51,7 @@ app.use(session({
     store: sessionStore,
     cookie: { maxAge: 1000*60*60*24*7 }
 }))
+app.use(csurf());
 app.use(fileUpLoadMiddleware.array('img', 10));
 app.use(variables);
 

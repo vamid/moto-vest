@@ -19,11 +19,13 @@ if ($cart) {
   $cart.addEventListener('click', event => {
     if (event.target.classList.contains('js-remove')) {
       const idx = event.target.dataset.id;
+      const csrf = event.target.dataset.csrf;
       fetch('cart/substr/' + idx, {
-        method: "delete"
+        method: "delete",
+        headers: {  'x-csrf-token': csrf, },
       })
       .then(res => res.json())
-      .then((cart) => {
+      .then(({cart, csrf}) => {
           if (cart.length) {
             const updateCart = cart.map(c => {
               return `
@@ -31,7 +33,7 @@ if ($cart) {
                       <td>1</td>
                       <td>${c.name}</td>
                       <td>${c.count}</td>
-                      <td><button class="btn js-remove" data-id="${c.id}">Delete</button></td>
+                      <td><button class="btn js-remove" data-id="${c.id}" data-csrf="${csrf}">Delete</button></td>
                   </tr>
               `
             }).join('');
@@ -50,13 +52,17 @@ if ($catalog_items) {
         if (event.target.classList.contains('btn-remove-catalog-item')) {
             const idx = event.target.dataset.id;
             const group = event.target.dataset.group;
+            const csrf = event.target.dataset.csrf;
             fetch('/catalog/remove/' + idx, {
               method: "delete",
-              headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
+              headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'x-csrf-token': csrf,
+              }, 
               body: JSON.stringify({"group": group}),
             })
             .then(res => res.json())
-            .then((catalog) => {
+            .then(({catalog, csrf}) => {
               if (catalog.length) {
                   const updateCatalog = catalog.map(c => {
                     if (c.visible) {
@@ -77,7 +83,7 @@ if ($catalog_items) {
                           <button class="btn-floating waves-effect waves-light darkslategrey" type="submit"><i class="material-icons">add_shopping_cart</i></button>
                         </form>
                           <button class="btn-floating waves-effect waves-light darkslategrey">
-                            <i class="material-icons btn-remove-catalog-item" data-id="${c._id}" data-group="${c.group}">delete_forever</i>
+                            <i class="material-icons btn-remove-catalog-item" data-id="${c._id}" data-group="${c.group}" data-csrf="${csrf}">delete_forever</i>
                           </button>
                       </div>
                       </div>
@@ -101,16 +107,20 @@ if ($order_search) {
   $order_search.addEventListener('click', event => {
     if (event.target.classList.contains('btn-order-search')) {
       const orderNumber = document.querySelector('#input_text');
+      var csrf = document.querySelector('meta[name="csrf-token"]').getAttribute('content');4
       fetch('/orders/search/',{
         method: "POST",
-        headers: { 'Content-Type': 'application/json;charset=utf-8' }, 
+        headers: {
+           'Content-Type': 'application/json;charset=utf-8',
+           'x-csrf-token': csrf, 
+          }, 
         body: JSON.stringify({"number": orderNumber.value}),
       })
       .then(res => res.json())
-      .then((order) => {
+      .then(({search_order, csrf}) => {
         const $order_search_result = document.querySelector('#order_search_result');
-        const order_cart = order.cart.map(c => {
-          console.log(c.id.name);
+        if (search_order) {
+        const order_cart = search_order.cart.map(c => {
           return `
           <ol>
             <li>
@@ -120,23 +130,30 @@ if ($order_search) {
         `
         })
         $order_search_result.innerHTML = `
+        <meta name="csrf-token" content="${csrf}">
         <div class="row">
         <div class="col s6 offset-s3">
           <div class="card">
             <div class="card-content">
               <span class="card-title">
-                Заказ № <small>${order.number}</small>
+                Заказ № <small>${search_order.number}</small>
               </span>
-              <p class="date">${order.date}</p>
-              <p><em>{{buyerName}}</em> (${order.buyerPhone})</p>
+              <p class="date">${search_order.date}</p>
+              <p><em>{{buyerName}}</em> (${search_order.buyerPhone})</p>
               ${order_cart}
               <hr>
-              <p>Цена: <span class="price">${order.price}</span></p>
+              <p>Цена: <span class="price">${search_order.price}</span></p>
             </div>
           </div>
         </div>
       </div>
         `;
+      } else {
+        $order_search_result.innerHTML = `
+        <meta name="csrf-token" content="${csrf}">
+        <p>Заказ не найден</p>
+        `
+      }
       })
     }
   })

@@ -52,7 +52,7 @@ router.post('/add', async (req, res) => {
         if (!req.session.orders) {
             req.session.orders = [order._id];
         } else {
-            req.session.orders.push(order._id);
+            await req.session.orders.push(order._id);
         }
         res.redirect('/orders');
     } catch (error) {
@@ -62,9 +62,16 @@ router.post('/add', async (req, res) => {
 //search
 
 router.post('/search', async (req, res) => {
-    const search_order = await Order.findOne({number: parseInt(req.body.number)});
-    await search_order.populate('cart.id').execPopulate()
-    res.json(search_order);
+    try {
+        const search_order = await Order.findOne({number: parseInt(req.body.number)});
+        if (search_order) {
+            await search_order.populate('cart.id').execPopulate()
+        }
+        const csrf = await req.csrfToken();
+        res.json({search_order, csrf});
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 

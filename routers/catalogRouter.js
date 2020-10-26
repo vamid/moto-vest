@@ -65,7 +65,6 @@ router.get('/add', su, async (req, res) => {
 })
 
 router.post('/add', su, async (req, res) => {
-    
     try {
         const new_product = new Catalog({
             name: req.body.name,
@@ -109,7 +108,8 @@ router.delete('/remove/:id', su, async (req, res) => {
         candidate.visible = false;
         await candidate.save();
         const catalog = (await Catalog.find()).filter(prod => prod.group === group);
-        res.json(catalog);        
+        const csrf = req.csrfToken();
+        res.json({catalog, csrf});        
     } catch (error) {
         console.log(error);
     }

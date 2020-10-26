@@ -69,8 +69,11 @@ router.delete('/substr/:id', async (req, res) => {
                     }
                     req.session.cart = cart;
                 }   
-        }             
-        res.json(await cartToArray(req.session.cart));
+        }        
+        
+        res.json({  "cart" : await cartToArray(req.session.cart),
+                    "csrf" : await req.csrfToken()
+        });
     } catch (error) {
         console.log(error);
     }

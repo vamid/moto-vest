@@ -16,6 +16,7 @@
 <a class="waves-effect waves-light btn modal-trigger" href="#modal2">admin</a>
 <!-- Modal Structure -->
   <form action="/superUser" method="POST" >
+    <input type="hidden" name="_csrf" value="{{csrf}}">
     <div id="modal2" class="modal modal-fixed-footer">
         <div class="modal-content">
             <div class="row">
